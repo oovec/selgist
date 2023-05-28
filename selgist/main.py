@@ -2,16 +2,22 @@ import argparse
 import toml
 import os
 from selgist.types_ import Config
-from selgist.fetcher import Fetcher, Gist
+from selgist.fetcher import Fetcher
+from selgist.gen import render_all
+
 
 def main():
-    print ("hehe")
+    print("hehe")
     parser = argparse.ArgumentParser(
         description='Generate selected static pages')
-    parser.add_argument(
-        '-c', '--config', help='Config file path', default='config.toml')
-    parser.add_argument(
-        '-o', '--output', help='Output directory path', default='public')
+    parser.add_argument('-c',
+                        '--config',
+                        help='Config file path',
+                        default='config.toml')
+    parser.add_argument('-o',
+                        '--output',
+                        help='Output directory path',
+                        default='public')
     args = parser.parse_args()
     try:
         with open(args.config, 'r') as f:
@@ -26,7 +32,7 @@ def main():
     gists = fetcher.get_selected_gists()
     for g in gists:
         print(g.id, g.title, g.category, g.tags)
-    
+    render_all(config, gists, args.output)
 
 
 if __name__ == "__main__":
